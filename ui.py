@@ -1,3 +1,5 @@
+import sys
+import os
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                              QPushButton, QLabel, QProgressBar, QListWidget,
                              QListWidgetItem, QLineEdit, QSystemTrayIcon,
@@ -7,6 +9,14 @@ from PyQt6.QtGui import QIcon, QAction, QFont
 from core import PomodoroTimer
 from config import ConfigManager
 
+def resource_path(relative_path: str) -> str:
+    """Get absolute path to resource, works for dev and for PyInstaller."""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class SettingsDialog(QDialog):
     """Window for configuring cycle durations."""
@@ -52,19 +62,17 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.timer_core = timer_core
         self.setWindowTitle("Pomaro")
-        self.resize(300, 324)
+        self.resize(300, 328)
 
-        # System Tray Configuration
+        # Configuração da Bandeja do Sistema
         self.tray_icon = QSystemTrayIcon(self)
-        # It is recommended to use a real icon in your project.
-        # Here, the fallback will use the native folder icon if no custom icon exists.
-        # icon = QIcon.fromTheme("appointment-new", QIcon.fromTheme("document-new"))
-
-        # Qt will look for the "pomodoro-app" icon in the system theme (KDE).
-        # If not found, it will try to load the "icon.svg" file from the local directory.
-        icon = QIcon.fromTheme("pomodoro-app", QIcon("icon.svg"))
-        self.tray_icon.setIcon(icon)
-        self.setWindowIcon(icon)
+        
+        # NEW: Uses the resource_path to guarantee the icon is found
+        icon_path = resource_path("icon.svg")
+        
+        # Try the system theme first, fallback to the bundled icon
+        icon = QIcon.fromTheme("pomaro", QIcon(icon_path))
+        
         self.tray_icon.setIcon(icon)
         self.setWindowIcon(icon)
         self._setup_tray_menu()
