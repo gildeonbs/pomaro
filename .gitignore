@@ -1,0 +1,45 @@
+# =========================
+# Executáveis e PyInstaller
+# =========================
+build/
+dist/
+*.spec
+*.exe
+*.bin
+
+# =========================
+# Python / Cache
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# =========================
+# Ambientes Virtuais (Virtualenvs)
+# =========================
+venv/
+.venv/
+env/
+.env/
+
+# =========================
+# Arquivos Específicos do Projeto
+# =========================
+# Ignorar o config.json local para não vazar/sobrescrever configurações pessoais de tempo do usuário
+config.json
+
+# =========================
+# IDEs e Editores
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Sistema Operacional
+# =========================
+.DS_Store
+Thumbs.db
+*~
